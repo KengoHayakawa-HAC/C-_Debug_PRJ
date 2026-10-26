@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.20)
+project(DebuggingWorkshop LANGUAGES CXX)
+enable_testing()
+add_subdirectory(01-hp)
+add_subdirectory(02-chase)
+add_subdirectory(03-collision)
+
+option(WORKSHOP_ADVANCED "Build optional advanced exercises 04 and 05" OFF)
+if(WORKSHOP_ADVANCED)
+    add_subdirectory(04-boss)
+    add_subdirectory(05-move)
+endif()

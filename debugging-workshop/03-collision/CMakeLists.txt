@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+project(collision LANGUAGES CXX)
+enable_testing()
+set(EXERCISE collision)
+include(../common/exercise.cmake)
