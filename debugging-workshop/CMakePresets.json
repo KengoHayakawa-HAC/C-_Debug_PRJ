@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "configurePresets": [{
+    "name": "workshop", "displayName": "Workshop - C++17 Debug",
+    "generator": "Ninja", "binaryDir": "${sourceDir}/build",
+    "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+  }],
+  "buildPresets": [{ "name": "workshop", "configurePreset": "workshop" }],
+  "testPresets": [{ "name": "workshop", "configurePreset": "workshop", "output": { "outputOnFailure": true } }]
+}

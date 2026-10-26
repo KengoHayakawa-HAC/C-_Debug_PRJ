@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+project(hp LANGUAGES CXX)
+enable_testing()
+set(EXERCISE hp)
+include(../common/exercise.cmake)

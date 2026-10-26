@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+project(chase LANGUAGES CXX)
+enable_testing()
+set(EXERCISE chase)
+include(../common/exercise.cmake)
