@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+project(DebuggingWorkshop LANGUAGES CXX)
+enable_testing()
+add_subdirectory(01-hp)
+add_subdirectory(02-chase)
+add_subdirectory(03-collision)
