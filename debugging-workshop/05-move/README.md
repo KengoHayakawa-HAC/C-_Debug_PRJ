@@ -1,5 +1,17 @@
 # 課題05：std::moveしたのにコピーが発生する
 
+## Visual Studioの.slnで実行する
+
+教材ルートの [DebuggingWorkshop.sln](../DebuggingWorkshop.sln) を開き、`Debug / x64` でソリューションをビルドします。`move_demo` をスタートアッププロジェクトに設定し、Ctrl+F5で実行してください。
+
+修正を保存・再ビルドした後、Developer PowerShellで `debugging-workshop` からテストします。
+
+```powershell
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^move_'
+```
+
+Releaseでビルドした場合は `-C Release` にします。詳しくは[共通手順](../README.md)を参照してください。以下にあるプリセット・`build-advanced`・`build-hp`等を使うコマンドは、別方式のCMakeビルド用です。
+
 上級の発展課題です。課題04とは独立して取り組めます。
 
 ## ストーリーと仕様

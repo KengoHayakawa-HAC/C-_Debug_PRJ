@@ -1,5 +1,17 @@
 # 課題2：敵の追尾（中級・25～35分）
 
+## Visual Studioの.slnで実行する
+
+教材ルートの [DebuggingWorkshop.sln](../DebuggingWorkshop.sln) を開き、`Debug / x64` でソリューションをビルドします。`chase_demo` をスタートアッププロジェクトに設定し、Ctrl+F5で実行してください。
+
+修正を保存・再ビルドした後、Developer PowerShellで `debugging-workshop` からテストします。
+
+```powershell
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^chase_spec$'
+```
+
+Releaseでビルドした場合は `-C Release` にします。詳しくは[共通手順](../README.md)を参照してください。以下にあるプリセット・`build-advanced`・`build-hp`等を使うコマンドは、別方式のCMakeビルド用です。
+
 敵が停止中のプレイヤーに近づきます。画面描画の代わりに、1ステップごとの座標を表示します。
 
 ## 座標と仕様

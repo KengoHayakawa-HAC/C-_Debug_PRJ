@@ -1,5 +1,17 @@
 # 課題1：HP計算（初級・15～20分）
 
+## Visual Studioの.slnで実行する
+
+教材ルートの [DebuggingWorkshop.sln](../DebuggingWorkshop.sln) を開き、`Debug / x64` でソリューションをビルドします。`hp_demo` をスタートアッププロジェクトに設定し、Ctrl+F5で実行してください。
+
+修正を保存・再ビルドした後、Developer PowerShellで `debugging-workshop` からテストします。
+
+```powershell
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^hp_spec$'
+```
+
+Releaseでビルドした場合は `-C Release` にします。詳しくは[共通手順](../README.md)を参照してください。以下にあるプリセット・`build-advanced`・`build-hp`等を使うコマンドは、別方式のCMakeビルド用です。
+
 プレイヤーが攻撃を受けたり、回復アイテムを使ったりする処理です。まず通常時とHPの端での結果を比べましょう。
 
 ## 仕様

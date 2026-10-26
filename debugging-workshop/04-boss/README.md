@@ -1,5 +1,17 @@
 # 課題04：ボスキャラクターの能力が消える
 
+## Visual Studioの.slnで実行する
+
+教材ルートの [DebuggingWorkshop.sln](../DebuggingWorkshop.sln) を開き、`Debug / x64` でソリューションをビルドします。`boss_demo` をスタートアッププロジェクトに設定し、Ctrl+F5で実行してください。
+
+修正を保存・再ビルドした後、Developer PowerShellで `debugging-workshop` からテストします。
+
+```powershell
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^boss_'
+```
+
+Releaseでビルドした場合は `-C Release` にします。詳しくは[共通手順](../README.md)を参照してください。以下にあるプリセット・`build-advanced`・`build-hp`等を使うコマンドは、別方式のCMakeビルド用です。
+
 上級の発展課題です。課題01～03の完了は前提ではありません。
 
 ## ストーリーと仕様

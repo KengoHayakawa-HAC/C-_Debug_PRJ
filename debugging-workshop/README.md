@@ -16,17 +16,59 @@ C++17のコンソールプログラムを使い、仕様と実行結果を比較
 
 04・05の基本用語は[前提知識](docs/advanced-primer.md)にまとめています。
 
-## Windows / Visual Studio 2022
+## Windows / Visual Studio 2022：ソリューションで開く
 
-1. Visual Studio Installerで「C++によるデスクトップ開発」をインストールします。MSVC v143、Windows SDK、Windows用C++ CMakeツールを含めます。Visual Studio Codeとは別の製品です。
-2. GitHubの `distribution` ブランチで「Code → Download ZIP」を選び、書き込み可能な場所へ展開します。
-3. Visual Studioで「ファイル → 開く → フォルダー」から **`debugging-workshop`** を開きます。`.sln` の作成は不要です。
-4. 構成を **`workshop`（01～03）** または **`advanced`（01～05）** にし、CMakeの構成完了を待ちます。
-5. 「ビルド → すべてビルド」を実行します。
-6. スタートアップ項目から上表の `*_demo.exe` を選び、**Ctrl+F5** で実行します。
+1. Visual Studio Installerで「C++によるデスクトップ開発」をインストールします。MSVC v143とWindows SDKを含めます。CTestも使う場合は「Windows用C++ CMakeツール」を含めます。Visual Studio Codeとは別の製品です。
+2. `distribution` ブランチのZIPをダウンロードし、**フォルダー全体を展開**します。
+3. **[DebuggingWorkshop.sln](DebuggingWorkshop.sln)** をダブルクリックするか、Visual Studioの「プロジェクトやソリューションを開く」で選びます。`.sln` だけを別の場所へ移動しないでください。
+4. 上部の構成を **Debug**、プラットフォームを **x64** にします。このソリューションではプリセット `advanced` の選択は不要です。
+5. 「ビルド → ソリューションのビルド」（Ctrl+Shift+B）を実行します。全5課題が対象です。
+6. ソリューションエクスプローラーで課題フォルダーを展開し、例えば `hp_demo` を右クリック →「スタートアッププロジェクトに設定」。**Ctrl+F5** で実行します。
 7. 修正後は保存し、実行を停止してから再ビルドします。デバッグ中の停止はShift+F5です。
 
-プリセットが表示されない場合は、開いたフォルダーとVSの更新状態を確認します。「ツール → オプション → CMake」のCMakePresets.json利用設定を確認して開き直してください。表示名はVSの版により異なります。
+`*_demo` が操作・観察用、`*_tests` が自動テスト用です。出力先は次の形式です。
+
+```text
+build-vs/x64/Debug/hp_demo/hp_demo.exe
+build-vs/x64/Debug/hp_tests/hp_tests.exe
+```
+
+Release構成では `Debug` が `Release` に変わります。各プロジェクトのソースは既存課題のファイルを参照しているため、CMake方式と同じ `exercise.cpp` を修正します。
+
+### ソリューションでビルドした結果をテストする
+
+Developer PowerShell for VS 2022を開き、`debugging-workshop` フォルダーへ移動します。
+
+```powershell
+# Visual StudioのGUIでビルド済みなら、このmsbuildコマンドは不要
+msbuild .\DebuggingWorkshop.sln /m /p:Configuration=Debug /p:Platform=x64
+
+# 全7項目のテスト
+ctest --test-dir visual-studio -C Debug --output-on-failure
+
+# 課題を選ぶ例
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^hp_spec$'
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^boss_'
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^move_'
+```
+
+Releaseでビルドした場合は `-C Release` を指定します。CTestは再ビルドしないため、修正後は保存・ビルドを先に行います。各課題のREADME冒頭に個別のコマンドがあります。
+
+CTestを使わず、テストプログラムを直接実行することもできます。
+
+```powershell
+.\build-vs\x64\Debug\hp_tests\hp_tests.exe
+.\build-vs\x64\Debug\boss_tests\boss_tests.exe storage
+.\build-vs\x64\Debug\boss_tests\boss_tests.exe initialization
+.\build-vs\x64\Debug\move_tests\move_tests.exe transfer
+.\build-vs\x64\Debug\move_tests\move_tests.exe data
+```
+
+Visual Studioから `boss_tests` を直接起動した場合の既定引数は `storage`、`move_tests` は `transfer` です。別項目へ切り替えるにはプロジェクトの「プロパティ → 構成プロパティ → デバッグ → コマンド引数」を変更します。通常は上記のCTestが便利です。
+
+## CMake方式でビルドする（Windows / Linux / VS Code）
+
+`.sln` を使う方法とは別のビルド方法です。Visual Studioで使う場合は「ファイル → 開く → フォルダー」で `debugging-workshop` を開き、CMakeプリセットを選択します。VS Codeでも同じフォルダーを開き、以下のコマンドを使います。
 
 ### コマンドでのビルド・テスト
 
@@ -80,7 +122,7 @@ ctest --preset workshop
 
 **デモはFAILがあっても終了コード0です。合否判定にはCTestを使用してください。** テストプログラムは合格時0、不合格時1を返します。04・05のテストを直接実行する際の引数は各課題のREADMEを参照してください。
 
-## 修正後の確認
+## CMake方式での修正後の確認
 
 `exercise.cpp` が主な修正対象です。04・05では `exercise.hpp` も変更できます。`cases.hpp` と `tests.cpp` は公開テスト、`main.cpp` は表示処理、`common/` は共通処理です。
 
@@ -111,20 +153,23 @@ ctest --test-dir build-hp --output-on-failure
 | 症状 | 確認事項 |
 |---|---|
 | コンパイラ・CMake・Ninjaが見つからない | VSの必要コンポーネントを確認し、Developer PowerShellを開き直す |
-| プリセットがない | 開いたフォルダーが `debugging-workshop` か確認する |
+| MSVC v143やWindows SDKが見つからない | VS InstallerでC++ワークロードと該当コンポーネントを追加する |
+| プリセットがない（CMake方式） | 開いたフォルダーが `debugging-workshop` か確認する |
 | 実行ファイルがない | 構成だけでなくビルドが成功したか確認する |
 | 修正が反映されない | 保存、実行停止、再ビルド、実行ターゲットを確認する |
 | 日本語が文字化けする | UTF-8で保存し、Windows Terminal等を使う。ターミナルでは `chcp 65001` も試す |
 | ビルド設定が衝突する | 記録を退避してから該当する生成物の `build` または `build-advanced` だけを削除し再構成する |
 | テストが失敗する | 期待と実際の差を確認する。コンパイルエラーとは区別する |
 
-Linuxでのビルド・実行を確認済みです。Windows / Visual Studio実機での動作は未検証です。
+Linuxでのビルド・実行を確認済みです。ソリューションの参照先とテスト設定を検証していますが、Windows / Visual Studio実機でのMSBuild・実行は未検証です。
 
 ## ファイル構成
 
 ```text
 debugging-workshop/
 ├── README.md
+├── DebuggingWorkshop.sln
+├── visual-studio/       Visual StudioプロジェクトとCTest設定
 ├── CMakeLists.txt / CMakePresets.json
 ├── common/
 ├── 01-hp/

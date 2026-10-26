@@ -1,5 +1,17 @@
 # 課題3：円の当たり判定（上級・25～35分）
 
+## Visual Studioの.slnで実行する
+
+教材ルートの [DebuggingWorkshop.sln](../DebuggingWorkshop.sln) を開き、`Debug / x64` でソリューションをビルドします。`collision_demo` をスタートアッププロジェクトに設定し、Ctrl+F5で実行してください。
+
+修正を保存・再ビルドした後、Developer PowerShellで `debugging-workshop` からテストします。
+
+```powershell
+ctest --test-dir visual-studio -C Debug --output-on-failure -R '^collision_spec$'
+```
+
+Releaseでビルドした場合は `-C Release` にします。詳しくは[共通手順](../README.md)を参照してください。以下にあるプリセット・`build-advanced`・`build-hp`等を使うコマンドは、別方式のCMakeビルド用です。
+
 キャラクターや弾を円として扱い、2つが触れたかを判定します。見た目の描画はありません。紙に円を描いて考えても構いません。
 
 ## 仕様と必要な数学
