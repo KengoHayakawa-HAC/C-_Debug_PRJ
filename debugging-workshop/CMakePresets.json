@@ -1,10 +1,54 @@
 {
   "version": 2,
-  "configurePresets": [{
-    "name": "workshop", "displayName": "Workshop - C++17 Debug",
-    "generator": "Ninja", "binaryDir": "${sourceDir}/build",
-    "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
-  }],
-  "buildPresets": [{ "name": "workshop", "configurePreset": "workshop" }],
-  "testPresets": [{ "name": "workshop", "configurePreset": "workshop", "output": { "outputOnFailure": true } }]
+  "configurePresets": [
+    {
+      "name": "workshop",
+      "displayName": "Workshop - C++17 Debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "advanced",
+      "displayName": "Workshop - Optional 04/05",
+      "inherits": "workshop",
+      "binaryDir": "${sourceDir}/build-advanced",
+      "cacheVariables": {
+        "WORKSHOP_ADVANCED": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "workshop",
+      "configurePreset": "workshop"
+    },
+    {
+      "name": "advanced",
+      "configurePreset": "advanced"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "workshop",
+      "configurePreset": "workshop",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "advanced",
+      "configurePreset": "advanced",
+      "filter": {
+        "include": {
+          "name": "^(boss_|move_)"
+        }
+      },
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
 }

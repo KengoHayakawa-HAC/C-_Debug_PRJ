@@ -12,6 +12,29 @@
 | [2: 敵の追尾](02-chase/README.md) | 中級・25～35分 | `chase_demo.exe` | 座標と、繰り返したときの動き |
 | [3: 円の当たり判定](03-collision/README.md) | 上級・25～35分 | `collision_demo.exe` | 通常条件と境界条件の比較 |
 
+04・05は**任意の発展課題**です。通常の120分の進行には追加しません。01～03を使う `workshop` 構成の内容も変わりません。
+
+| 発展課題 | 難易度・目安 | 実行ターゲット |
+|---|---|---|
+| [04: ボスキャラクターの能力が消える](04-boss/README.md) | 上級・40～60分 | `boss_demo.exe` |
+| [05: std::moveしたのにコピーが発生する](05-move/README.md) | 上級・30～45分 | `move_demo.exe` |
+
+[短い前提知識](docs/advanced-primer.md)から取り組めます。[追加課題の検証記録](docs/advanced-validation.md)も用意しています。04は攻撃の保持と初期化を別々に、05はコピー・ムーブ回数とデータ内容を別々にテストします。
+
+Visual Studioで追加課題を使う場合は構成 `advanced` を選択してビルドし、上の実行ターゲットをCtrl+F5で実行します。コマンドは教材フォルダーから次のとおりです。
+
+```sh
+cmake --preset advanced
+cmake --build --preset advanced --parallel 2
+ctest --preset advanced
+ctest --preset advanced -R '^boss_'
+ctest --preset advanced -R '^move_'
+```
+
+`advanced` のCTestプリセットは04・05だけを選択します。全5課題をまとめて確認する場合は `ctest --test-dir build-advanced --output-on-failure` を使用します。初期状態の失敗は意図されたものです。各課題単独のビルド・テスト手順は個別READMEを参照してください。
+
+追加課題のデモは固定ケースを表示して終了します。以下にある入力メニューの説明は01～03向けです。04・05ではクラスやAPIの設計を扱うため、`exercise.hpp` も修正できます。公開テストと05の計測処理は維持してください。
+
 [比較記録テンプレート](docs/record-template.md)をチームごとにコピーします。運営者は[進行資料](docs/facilitator.md)も確認してください。
 
 ## Windows / Visual Studio 2022（標準環境）
@@ -155,6 +178,8 @@ debugging-workshop/
 ├── 01-hp/               HP課題
 ├── 02-chase/            追尾課題
 ├── 03-collision/        当たり判定課題
+├── 04-boss/             ボスの能力（任意）
+├── 05-move/             リソース転送（任意）
 ├── hints/               各課題の3段階ヒント
 └── docs/                記録テンプレート・進行資料・検証記録
 ```
